@@ -15,7 +15,10 @@ func CreateComment(c *gin.Context){
 		return
 	}
 	comment.CreatedAt = time.Now()
-	models.DB.NewInsert().Model(&comment).Exec(c)
+	if _, err := models.DB.NewInsert().Model(&comment).Exec(c); err != nil{
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Cannot comment!"})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"msg": "Successfully commented!"})
 }

@@ -10,7 +10,7 @@ import (
 )
 
 func FindPosts(c *gin.Context) {
-	var posts []map[string]interface{}
+	posts := []map[string]interface{}{}
 	if err := models.DB.NewSelect().Model(&models.Post{}).Column("title", "id").Scan(c, &posts); err != nil {
 		c.AbortWithStatusJSON(http.StatusOK, gin.H{"error": "Cannot fetch posts!"})
 		return
